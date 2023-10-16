@@ -39,6 +39,7 @@ const product_create_post = async (req, res) => {
         product
             .save()
             .then((result) => {
+                console.log("Add a product successfully" +result);
                 res.json({ redirect: "/products" });
             })
             .catch((err) => {
@@ -55,7 +56,7 @@ const product_delete = (req, res) => {
 
     Product.findById(id)
         .then((result) => {
-            if (result.image === null) {
+            if (result.image !== null) {
                 drive.files.delete({
                     fileId: result.image.id,
                 });
@@ -82,7 +83,7 @@ const product_update_post = async (req, res) => {
         if (files.length > 0) {
             Product.findById(id)
                 .then((result) => {
-                    if (result.image === null) {
+                    if (result.image !== null) {
                         drive.files.delete({
                             fileId: result.image.id,
                         });

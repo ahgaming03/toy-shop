@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(expressLayouts);
 
+
 // import routes
 app.use("/products", require("./routes/productRoutes"));
 

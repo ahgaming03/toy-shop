@@ -8,10 +8,11 @@
       <div class="col-md-6 text-nowrap">
         <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
           <label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
-              <option value="10" selected="">10</option>
+              <option value="10">10</option>
               <option value="25">25</option>
               <option value="50">50</option>
               <option value="100">100</option>
+              <option value="all" selected="">Show all</option>
             </select>&nbsp;</label>
         </div>
       </div>
@@ -110,11 +111,12 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
+                        <img src="https://drive.google.com/uc?export=view&id=<%= product.image.id  %>" style="height: 200px; width: 200px;">
                         <div>
-                          Name: <%= product.name %>
+                          <strong>Name: </strong><%= product.name %>
                         </div>
                         <div>
-                          Price: <%= product.price %>
+                          <strong>Price: </strong>$<%= product.price %>
                         </div>
                       </div>
                       <div class="modal-footer">
@@ -142,6 +144,7 @@
                       <form class="updateProduct" data-doc="<%= product._id %>">
                         <div class="modal-body">
                           <div>
+                            <img src="https://drive.google.com/uc?export=view&id=<%= product.image.id  %>" style="height: 200px; width: 200px;">
                             <div class="mb-3">
                               <label for="name" class="form-label">Name:</label>
                               <input type="text" class="form-control" id="name" name="name" placeholder="Input name of product" value="<%= product.name %>" required>
@@ -157,17 +160,13 @@
                             <div class="mb-3">
                               <label for="file-update" class="form-label">Image:</label>
                               <input type="file" class="form-control mb-3 updateProduct" id="file-upload" name="image" accept=".jpeg, .png, .jpg" data-id="<%= product._id %>" onchange="previewImageUpdate(event)">
-                              <% if (product.image.id){ %>
-                              <img id="preview-<%= product._id %>" src="https://drive.google.com/uc?export=view&id=<%= product.image.id  %>" style="height: 200px; width: 200px;">
-                              <% } else { %>
-                              <img id="preview-<%= product._id %>" src="assets/img/default_image.jpg" style="height: 200px; width: 200px;">
-                              <% } %>
+                              <img id="preview-<%= product._id %>" src="assets/img/default_image.jpg" style="height: 160px; width: 160px;">
                             </div>
                           </div>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="submit" id="btnUpdate" class="btn btn-success" >Update</button>
+                          <button type="submit" id="btnUpdate" class="btn btn-success">Update</button>
                         </div>
                       </form>
                     </div>
@@ -199,7 +198,7 @@
     <div class="row">
       <div class="col-md-6 align-self-center">
         <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
-          Showing 1 to 10 of 27</p>
+          Showing 1 to <%= products.length %> of <%= products.length %></p>
       </div>
       <div class="col-md-6">
         <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">

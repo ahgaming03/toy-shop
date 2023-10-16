@@ -72,6 +72,12 @@ formAdd.addEventListener("submit", async (e) => {
 // change image when file is selected
 function previewImage(event) {
     const reader = new FileReader();
+
+    if (event.target.files.length === 0) {
+        const output = document.getElementById("preview");
+        output.src = "/assets/img/default_image.jpg";
+        return;
+    }
     reader.onload = function () {
         const output = document.getElementById("preview");
         output.src = reader.result;
@@ -81,9 +87,15 @@ function previewImage(event) {
 
 function previewImageUpdate(event) {
     const reader = new FileReader();
+    const input = event.target;
+    const id = input.getAttribute("data-id");
+    
+    if (event.target.files.length === 0) {
+        const output = document.getElementById("preview-" + id);
+        output.src = "/assets/img/default_image.jpg";
+        return;
+    }
     reader.onload = function () {
-        const input = event.target;
-        const id = input.getAttribute("data-id");
         const output = document.getElementById("preview-" + id);
         output.src = reader.result;
     };
