@@ -39,7 +39,7 @@ const product_create_post = async (req, res) => {
         product
             .save()
             .then((result) => {
-                console.log("Add a product successfully" +result);
+                console.log("Add a product successfully" + result);
                 res.json({ redirect: "/products" });
             })
             .catch((err) => {
@@ -125,21 +125,40 @@ const product_update_post = async (req, res) => {
 
 const uploadFile = async (fileObject) => {
     const bufferStream = new stream.PassThrough();
-    bufferStream.end(fileObject.buffer);
-    const { data } = await drive.files.create({
-        media: {
-            mimeType: fileObject.mimeType,
-            body: bufferStream,
-        },
-        requestBody: {
-            name: Date.now() + path.extname(fileObject.originalname),
-            parents: ["1kxgAI-Z60m9LwsGMZP4KzKudidj0PapU"],
-        },
-        fields: "id,name, mimeType, webViewLink",
-    });
+    try {
+        bufferStream.end(fileObject.buffer);
+        const { data } = await drive.files.create({
+            media: {
+                mimeType: fileObject.mimeType,
+                body: bufferStream,
+            },
+            requestBody: {
+                name: Date.now() + path.extname(fileObject.originalname),
+                parents: ["1kxgAI-Z60m9LwsGMZP4KzKudidj0PapU"],
+            },
+            fields: "id,name, mimeType, webViewLink",
+        });
+        await setFilePublic(data.id);
 
-    console.log(`Uploaded file:`, data);
-    return data;
+        console.log(`Uploaded file:`, data);
+        return data;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+const setFilePublic = async (fileId) => {
+    try {
+        await drive.permissions.create({
+            fileId,
+            requestBody: {
+                role: "reader",
+                type: "anyone",
+            },
+        });
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 module.exports = {
